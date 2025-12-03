@@ -2,16 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Without Docker') {
-            steps {
-                sh '''
-                    echo "Without Docker"
-                    ls -la
-                    touch container-no.txt
-                '''
-            }
-        }
-        stage('With Docker') {
+        stage('Build') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -20,10 +11,16 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "With Docker"
+                    echo "Contenu du code importé depuis git"
                     ls -la
-                    touch container-yes.txt
+                    echo "Versions des composants utilisés"
                     npm --version
+                    node --version
+                    echo "Début du build de l'application"
+                    npm ci
+                    npm run build
+                    echo "Vérification du résultat"
+                    ls -lart
                 '''
             }
         }
