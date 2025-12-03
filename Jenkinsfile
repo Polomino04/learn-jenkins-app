@@ -3,6 +3,7 @@ pipeline {
 
     stages {
         stage('Build') {
+            // This is a comment
             agent {
                 docker {
                     image 'node:18-alpine'
