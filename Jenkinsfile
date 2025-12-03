@@ -33,7 +33,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    grep "index.htlm" build/
+                    test -f build/index.htlm
                     echo "Le fichier index.html existe bien"
                     echo "Lancement de la commande npm test"
                     npm test
