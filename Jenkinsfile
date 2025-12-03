@@ -11,19 +11,16 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "Contenu du code importé depuis git"
                     ls -la
-                    echo "Versions des composants utilisés"
-                    npm --version
                     node --version
-                    echo "Début du build de l'application"
+                    npm --version
                     npm ci
                     npm run build
-                    echo "Vérification du résultat"
-                    ls -lart
+                    ls -la
                 '''
             }
         }
+
         stage('Test') {
             agent {
                 docker {
@@ -31,18 +28,12 @@ pipeline {
                     reuseNode true
                 }
             }
+
             steps {
                 sh '''
-                    test -f build/index.htlm
-                    echo "Le fichier index.html existe bien"
-                    echo "Lancement de la commande npm test"
+                    test -f build/index.html
                     npm test
                 '''
-            }            
-        }
-        stage('Clean Workspace') {
-            steps {
-                cleanWs()
             }
         }
     }
