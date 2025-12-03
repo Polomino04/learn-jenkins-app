@@ -2,11 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Clean Workspace') {
-            steps {
-                cleanWs()
-            }
-        }
         stage('Build') {
             agent {
                 docker {
@@ -27,6 +22,11 @@ pipeline {
                     echo "Vérification du résultat"
                     ls -lart
                 '''
+            }
+        }
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
             }
         }
     }
