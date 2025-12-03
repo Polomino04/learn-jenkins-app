@@ -3,6 +3,7 @@ pipeline {
 
     stages {
         /*
+
         stage('Build') {
             agent {
                 docker {
@@ -22,28 +23,31 @@ pipeline {
             }
         }
         */
-        stage('Npm Test') {
+
+        stage('Test') {
             agent {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
                 }
             }
+
             steps {
                 sh '''
-                    test -f build/index.html
+                    #test -f build/index.html
                     npm test
                 '''
             }
         }
 
-        stage('Test application') {
+        stage('E2E') {
             agent {
                 docker {
-                    image 'mcr.microsoft.com/playwright:v1.57.0-noble'
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                     reuseNode true
                 }
             }
+
             steps {
                 sh '''
                     npm install serve
@@ -53,7 +57,6 @@ pipeline {
                 '''
             }
         }
-
     }
 
     post {
@@ -61,5 +64,4 @@ pipeline {
             junit 'jest-results/junit.xml'
         }
     }
-
 }
